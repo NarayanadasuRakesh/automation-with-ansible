@@ -24,7 +24,7 @@
     ansible.builtin.rabbitmq_user:
       user: roboshop
       password: roboshop123
-    when: not rabbitmq_user_check.exists
+    when: not rabbitmq_user_check.changed | default(false)
   - name: Set permissions
     ansible.builtin.command: rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
     
