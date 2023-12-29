@@ -36,7 +36,7 @@
       name: "{{ item }}"
       args:
         chdir: /app
-      loop:
+    loop:
       - go mod init dispatch
       - go get
       - go built
@@ -55,7 +55,7 @@
   - name: Daemon-reload
     ansible.builtin.systemd_service:
       daemon-reload: yes
-      
+
   - name: Enable and Start dispatch service
     ansible.builtin.systemd_service:
       name: dispatch
