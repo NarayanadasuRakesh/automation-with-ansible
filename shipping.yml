@@ -30,7 +30,7 @@
       url: https://roboshop-builds.s3.amazonaws.com/shipping.zip
       dest: /tmp
 
-  - name: Unarchive
+  - name: Unarchive src
     ansible.builtin.unarchive:
       src: /tmp/shipping.zip
       dest: /app
@@ -53,13 +53,13 @@
 
   - name: Replace cart Domain name/IP
     ansible.builtin.replace:
-      path: /etc/systemd/system/cart.service
+      path: /etc/systemd/system/shipping.service
       regexp: '<CART-SERVER-IP-ADDRESS>'
       replace: '{{ CART_HOST }}'
 
   - name: Replace mysql Domain name/IP
     ansible.builtin.replace:
-      path: /etc/systemd/system/mysql.service
+      path: /etc/systemd/system/shipping.service
       regexp: '<MYSQL-SERVER-IP-ADDRESS>'
       replace: '{{ MYSQL_HOST }}'
  
