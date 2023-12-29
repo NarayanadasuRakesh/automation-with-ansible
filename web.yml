@@ -22,37 +22,58 @@
     ansible.builtin.package:
       name: nginx
       state: present
+
   - name: Remove default web content
     ansible.builtin.file:
       path: /usr/share/nginx/html/*
       state: absent
+
   - name: Download web application
     ansible.builtin.get_url:
       url: https://roboshop-builds.s3.amazonaws.com/web.zip
       dest: /tmp
+
   - name: Unarchive web application
     ansible.builtin.unarchive:
       src: /tmp/web.zip
       dest: /usr/share/nginx/html
       remote_src: yes
+
   - name: Copy reverse proxy configuration
     ansible.builtin.copy:
       src: roboshop.conf
       dest: /etc/nginx/default.d/roboshop.conf
+
   - name: Replace domain name/IP
     ansible.builtin.replace:
       path: /etc/nginx/default.d/roboshop.conf
-      replace:
-        - regexp: '<catalogue-ip>'
-          replace: '{{ CATALOGUE_HOST }}'
-        - regexp: '<user-ip>'
-          replace: '{{ USER_HOST }}'
-        - regexp: '<cart-ip>'
-          replace: '{{ CART_HOST }}'
-        - regexp: '<shipping-ip>'
-          replace: '{{ SHIPPING_HOST }}'
-        - regexp: '<payment-ip>'
-          replace: '{{ PAYMENT_HOST }}'
+      regexp: '<catalogue-ip>'
+      replace: '{{ CATALOGUE_HOST }}'
+
+  - name: Replace domain name/IP
+    ansible.builtin.replace:
+      path: /etc/nginx/default.d/roboshop.conf
+      regexp: '<user-ip>'
+      replace: '{{ USER_HOST }}'
+
+  - name: Replace domain name/IP
+    ansible.builtin.replace:
+      path: /etc/nginx/default.d/roboshop.conf
+      regexp: '<cart-ip>'
+      replace: '{{ CART_HOST }}'
+
+  - name: Replace domain name/IP
+    ansible.builtin.replace:
+      path: /etc/nginx/default.d/roboshop.conf
+      regexp: '<shipping-ip>'
+      replace: '{{ SHIPPING_HOST }}'
+
+  - name: Replace domain name/IP
+    ansible.builtin.replace:
+      path: /etc/nginx/default.d/roboshop.conf
+      regexp: '<payment-ip>'
+      replace: '{{ PAYMENT_HOST }}'
+      
   - name: Start and Enable service
     ansible.builtin.systemd_service:
       name: nginx
