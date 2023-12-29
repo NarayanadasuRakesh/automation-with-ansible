@@ -3,19 +3,19 @@
   become: yes
   vars_prompt:
     - name: CATALOGUE_HOST
-      prompt: Enter catalogue domain/IP
+      prompt: Enter CATALOGUE domain/IP
       private: false
     - name: USER_HOST
-      prompt: Enter user domain/IP
+      prompt: Enter USER domain/IP
       private: false
     - name: CART_HOST
-      prompt: Enter cart domain/IP
+      prompt: Enter CART domain/IP
       private: false
     - name: SHIPPING_HOST
-      prompt: Enter shipping domain/IP
+      prompt: Enter SHIPPING domain/IP
       private: false
     - name: PAYMENT_HOST
-      prompt: Enter payment domain/IP
+      prompt: Enter PAYMENT domain/IP
       private: false
   tasks:
   - name: Install nginx
@@ -44,36 +44,36 @@
       src: roboshop.conf
       dest: /etc/nginx/default.d/roboshop.conf
 
-  - name: Replace domain name/IP
+  - name: Replace CATALOGUE domain name/IP
     ansible.builtin.replace:
       path: /etc/nginx/default.d/roboshop.conf
       regexp: '<catalogue-ip>'
       replace: '{{ CATALOGUE_HOST }}'
 
-  - name: Replace domain name/IP
+  - name: Replace USER domain name/IP
     ansible.builtin.replace:
       path: /etc/nginx/default.d/roboshop.conf
       regexp: '<user-ip>'
       replace: '{{ USER_HOST }}'
 
-  - name: Replace domain name/IP
+  - name: Replace CART domain name/IP
     ansible.builtin.replace:
       path: /etc/nginx/default.d/roboshop.conf
       regexp: '<cart-ip>'
       replace: '{{ CART_HOST }}'
 
-  - name: Replace domain name/IP
+  - name: Replace SHIPPING domain name/IP
     ansible.builtin.replace:
       path: /etc/nginx/default.d/roboshop.conf
       regexp: '<shipping-ip>'
       replace: '{{ SHIPPING_HOST }}'
 
-  - name: Replace domain name/IP
+  - name: Replace PAYMENT domain name/IP
     ansible.builtin.replace:
       path: /etc/nginx/default.d/roboshop.conf
       regexp: '<payment-ip>'
       replace: '{{ PAYMENT_HOST }}'
-      
+
   - name: Start and Enable service
     ansible.builtin.systemd_service:
       name: nginx

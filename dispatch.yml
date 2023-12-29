@@ -40,7 +40,6 @@
     args:
         chdir: /app
     
-
   - name: Copy dispatch.service file
     ansible.builtin.systemd_service:
       src: dispatch.service

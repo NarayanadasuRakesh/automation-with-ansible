@@ -5,10 +5,10 @@
     mysql_password: RoboShop@1
   vars_prompt:
     - name: CART_HOST
-      prompt: Enter cart Domain name/IP
+      prompt: Enter CART domain/IP
       private: false
     - name: MYSQL_HOST
-      prompt: Enter mysql Domain name/IP
+      prompt: Enter MYSQL domain/IP
       private: false
   tasks:
   - name: Install maven
@@ -51,13 +51,13 @@
       src: shipping.service
       dest: /etc/systemd/system/shipping.service
 
-  - name: Replace cart Domain name/IP
+  - name: Replace CART domain/IP
     ansible.builtin.replace:
       path: /etc/systemd/system/shipping.service
       regexp: '<CART-SERVER-IP-ADDRESS>'
       replace: '{{ CART_HOST }}'
 
-  - name: Replace mysql Domain name/IP
+  - name: Replace MYSQL domain/IP
     ansible.builtin.replace:
       path: /etc/systemd/system/shipping.service
       regexp: '<MYSQL-SERVER-IP-ADDRESS>'
