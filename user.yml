@@ -7,7 +7,7 @@
     ansible.builtin.dnf:
       name: nodejs
       state: absent
-      ignore_errors: true
+      failed_when: false
 
   - name: Enable nodejs module
     ansible.builtin.dnf:
