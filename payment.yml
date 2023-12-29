@@ -3,13 +3,13 @@
   become: yes
   vars_prompt:
     - name: CART_HOST
-      prompt: Enter the cart domain/IP
+      prompt: Enter the CART Domain name/IP
       private: false
     - name: USER_HOST
-      prompt: Enter the user domain/IP
+      prompt: Enter the USER Domain name/IP
       private: false
     - name: RABBITMQ_HOST
-      prompt: Enter the rabbitmq domain/IP
+      prompt: Enter the RABBITMQ domain/IP
       private: false
   tasks:
   - name: Install python package
@@ -20,40 +20,55 @@
     - python36
     - gcc
     - python3-devel
+
   - name: create application user
     ansible.builtin.user:
       path: /app
       state: directory
+
   - name: Download application src
     ansible.builtin.get_url: 
       url: https://roboshop-builds.s3.amazonaws.com/payment.zip
       dest: /tmp
+
   - name: Unarchive src
     ansible.builtin.unarchive:
       src: /tmp/payment.zip
       dest: /app
       remote_src: yes
+
   - name: Install dependencies
     ansible.builtin.command: pip3.6 install -r requirements.txt
     args:
       chdir: /app
+
   - name: Copy payment service file
     ansible.builtin.copy:
       src: payment.service
       dest: /etc/systemd/system/payment.service
-  - name: Replace domain/IP in payment.service file
+
+  - name: Replace CART Domain name/IP in payment.service file
     ansible.builtin.replace:
       path: /etc/systemd/system/payment.service
-      replace:
-        - regexp: <CART-SERVER-IPADDRESS>
-          replace: "{{ CART_HOST }}"
-        - regexp: <USER-SERVER-IPADDRESS>
-          replace: "{{ USER_HOST }}"
-        - regexp: <RABBITMQ-SERVER-IPADDRESS>
-          replace: "{{ RABBITMQ_HOST }}"
+      regexp: <CART-SERVER-IPADDRESS>
+      replace: "{{ CART_HOST }}"
+
+  - name: Replace USER Domain name/IP in payment.service file
+    ansible.builtin.replace:
+      path: /etc/systemd/system/payment.service    
+      regexp: <USER-SERVER-IPADDRESS>
+      replace: "{{ USER_HOST }}"
+
+  - name: Replace RABBITMQ Domain name/IP in payment.service file
+    ansible.builtin.replace:
+      path: /etc/systemd/system/payment.service    
+      regexp: <RABBITMQ-SERVER-IPADDRESS>
+      replace: "{{ RABBITMQ_HOST }}"
+
   - name: Daemon-reload
     ansible.builtin.systemd_service:
       daemon-reload: yes
+
   - name: Enable and Start payment service
     ansible.builtin.systemd_service:
       name: payment
