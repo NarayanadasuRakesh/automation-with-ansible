@@ -44,17 +44,22 @@
     ansible.builtin.systemd_service:
       daemon-reload: yes
 
+  - name: Copy mongodb repo
+    ansible.builtin.copy:
+      src: mongodb.repo
+      dest: /etc/yum.repos.d/mongodb.repo
+
   - name: Install mongodb client
     ansible.builtin.package:
       name: mongodb-org-shell
       state: present
 
   - name: get user count
-    ansible.builtin.command: mongo --host <IP> --quiet --eval 'db=db.getSiblingDB("users"); db.users.count()'
+    ansible.builtin.command: mongo --host {{ MONGODB_HOST }} --quiet --eval 'db=db.getSiblingDB("users"); db.users.count()'
     register: user_count
 
   - name: load user data
-    ansible.builtin.command: mongo --host <IP> < /app/schema/user.js
+    ansible.builtin.command: mongo --host {{ MONGODB_HOST }} < /app/schema/user.js
     when: user_count.stdout == "0"
 
   - name: Start and Enable service
