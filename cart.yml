@@ -3,10 +3,10 @@
   become: yes
   vars_prompt:
     - name: REDIS_HOST
-      prompt: Enter redis Domain name/IP
+      prompt: Enter REDIS domain/IP
       private: false
     - name: CATALOGUE_HOST
-      prompt: Enter catalogue Domain name/IP
+      prompt: Enter CATALOGUE domain/IP
       private: false
   tasks:
   - name: Disable nodejs module
@@ -47,13 +47,13 @@
       src: cart.service
       dest: /etc/systemd/system/cart.service
 
-  - name: Replace Domain name/IP
+  - name: Replace REDIS domain/IP
     ansible.builtin.replace:
       path: /etc/systemd/system/cart.service
       regexp: '<REDIS-SERVER-IP>'
       replace: '{{ REDIS_HOST }}'
 
-  - name: Replace Domain name/IP
+  - name: Replace CATALOGUE domain/IP
     ansible.builtin.replace:
       path: /etc/systemd/system/cart.service
       regexp: '<CATALOGUE-SERVER-IP>'
