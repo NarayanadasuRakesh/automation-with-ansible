@@ -32,14 +32,14 @@
       remote_src: yes
 
   - name: Install dependencies and build applicaion
-    ansible.builtin.package:
-      name: "{{ item }}"
-      args:
-        chdir: /app
+    ansible.builtin.command: "{{ item }}"
     loop:
       - go mod init dispatch
       - go get
       - go built
+    args:
+        chdir: /app
+    
 
   - name: Copy dispatch.service file
     ansible.builtin.systemd_service:
