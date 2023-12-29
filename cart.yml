@@ -1,4 +1,4 @@
-- name: cart server configuration
+- name: Cart server Install and configuration
   hosts: cart
   become: yes
   vars_prompt:
@@ -10,16 +10,7 @@
       private: false
   tasks:
   - name: Disable nodejs module
-  #  ansible.builtin.shell: dnf module disable nodejs -y; dnf module enable nodejs:18 -y
-    ansible.builtin.dnf:
-      name: nodejs
-      state: absent
-      ignore_errors: true
-
-  - name: Enable nodejs module
-    ansible.builtin.dnf:
-      name: nodejs:18
-      state: present
+    ansible.builtin.shell: dnf module disable nodejs -y; dnf module enable nodejs:18 -y
 
   - name: Install nodejs
     ansible.builtin.package:
@@ -29,14 +20,17 @@
   - name: Create cart
     ansible.builtin.user:
       name: roboshop
+
   - name: Create directory
     ansible.builtin.file:
       path: /app
       state: directory
+
   - name: Download cart application code
     ansible.builtin.get_url:
       url: https://roboshop-builds.s3.amazonaws.com/cart.zip
       dest: /tmp
+
   - name: Unarchive cart application
     ansible.builtin.unarchive:
       src: /tmp/cart.zip
@@ -52,8 +46,7 @@
     ansible.builtin.copy:
       src: cart.service
       dest: /etc/systemd/system/cart.service
-      args:
-        chdir: /app
+
   - name: Replace Domain name/IP
     ansible.builtin.replace:
       path: /etc/systemd/system/cart.service
