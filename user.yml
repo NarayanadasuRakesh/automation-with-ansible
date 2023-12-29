@@ -66,7 +66,7 @@
     ansible.builtin.command: mongo --host {{ MONGODB_HOST }} < /app/schema/user.js
     when: user_count.stdout == "0"
 
-  - name: Start and Enable service
+  - name: Enable and Start service
     ansible.builtin.systemd_service:
       name: user
       enabled: yes
