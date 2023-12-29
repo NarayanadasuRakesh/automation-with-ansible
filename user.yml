@@ -5,6 +5,9 @@
     - name: MONGODB_HOST
       prompt: Enter mongodb domain/IP
       private: false
+    - name: REDIS_HOST
+      prompt: Enter REDIS domain/IP
+      private: false
   tasks:
   - name: Disable nodejs module
     ansible.builtin.shell: dnf module disable nodejs -y; dnf module enable nodejs:18 -y
@@ -43,6 +46,18 @@
     ansible.builtin.copy:
       src: user.service
       dest: /etc/systemd/system/user.service
+
+  - name: Replace domain name/IP
+    ansible.builtin.replace:
+      path: /etc/systemd/system/user.service
+      regexp: '<MONGODB-SERVER-IP-ADDRESS>'
+      replace: '{{ MONGODB_HOST }}'
+
+  - name: Replace domain name/IP
+    ansible.builtin.replace:
+      path: /etc/systemd/system/user.service
+      regexp: '<REDIS-SERVER-IP-ADDRESS>'
+      replace: '{{ REDIS_HOST }}'
 
   - name: Daemon reload service
     ansible.builtin.systemd_service:
