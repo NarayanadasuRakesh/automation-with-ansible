@@ -49,15 +49,15 @@
 
   - name: Replace Domain name/IP
     ansible.builtin.replace:
-    path: /etc/systemd/system/cart.service
-    regexp: '<REDIS-SERVER-IP>'
-    replace: '{{ REDIS_HOST }}'
+      path: /etc/systemd/system/cart.service
+      regexp: '<REDIS-SERVER-IP>'
+      replace: '{{ REDIS_HOST }}'
 
   - name: Replace Domain name/IP
     ansible.builtin.replace:
-    path: /etc/systemd/system/cart.service
-    regexp: '<CATALOGUE-SERVER-IP>'
-    replace: '{{ CATALOGUE_HOST }}'
+      path: /etc/systemd/system/cart.service
+      regexp: '<CATALOGUE-SERVER-IP>'
+      replace: '{{ CATALOGUE_HOST }}'
 
   - name: Daemon reload service
     ansible.builtin.systemd_service:
