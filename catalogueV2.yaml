@@ -1,10 +1,10 @@
 - name: Configure catalogue server
   hosts: catalogue
+  become: yes
   vars_prompt: # input hostname
     - name: MONGODB_HOST
       prompt: Enter mongodb domain/IP
       private: false
-  become: yes
   tasks:
   - name: Disable nodejs module
     ansible.builtin.shell: dnf module disable nodejs -y; dnf module enable nodejs:18 -y
