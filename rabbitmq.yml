@@ -19,24 +19,9 @@
       enabled: yes
       state: restarted
   
-  - name: Check if rabbitmq user exists
-    ansible.builtin.rabbitmq_user:
-      user: roboshop
-      state: absent
-    register: rabbitmq_user_check
-  
   - name: Create rabbitmq user
-    ansible.builtin.rabbitmq_user:
-      user: roboshop
-      password: roboshop123
-    when: not rabbitmq_user_check.changed | default(false)
-  # - name: Set permissions
-  #   ansible.builtin.command: rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
-  - name: Set rabbitmq permissions
-    ansible.builtin.rabbitmq_user:
-      user: roboshop
-      vhost: /
-      configure_priv: .*
-      read_priv: .*
-      write_priv: .*
-    when: rabbitmq_user_check.changed | default(false)
+    ansible.builtin.command: rabbitmqctl add_user roboshop roboshop123
+
+  - name: Set permissions
+    ansible.builtin.command: rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+
