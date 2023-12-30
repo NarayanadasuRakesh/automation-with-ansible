@@ -21,7 +21,7 @@
     ansible.builtin.user:
       name: roboshop
 
-  - name: Create directory
+  - name: Create app directory
     ansible.builtin.file:
       path: /app
       state: directory
@@ -61,7 +61,7 @@
 
   - name: Daemon reload service
     ansible.builtin.systemd_service:
-      daemon-reload: yes
+      daemon-reload: true
 
   - name: Copy mongodb repo
     ansible.builtin.copy:

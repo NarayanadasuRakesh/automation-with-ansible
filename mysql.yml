@@ -22,4 +22,4 @@
       state: started
 
   - name: Create username and password
-    ansible.builtin.shell: mysql_secure_installation --set-root-pass RoboShop@1   
+    ansible.builtin.command: mysql_secure_installation --set-root-pass RoboShop@1   

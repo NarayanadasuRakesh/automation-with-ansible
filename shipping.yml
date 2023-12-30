@@ -20,7 +20,7 @@
     ansible.builtin.user:
       name: roboshop
 
-  - name: Create directory
+  - name: Create app directory
     ansible.builtin.file:
       path: /app
       state: directory
@@ -65,7 +65,7 @@
  
   - name: Daemon reload
     ansible.builtin.systemd_service:
-      daemon-reload: yes
+      daemon-reload: true
 
   - name: Install mysql 
     ansible.builtin.package:

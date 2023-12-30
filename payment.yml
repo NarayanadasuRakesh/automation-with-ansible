@@ -12,7 +12,7 @@
       prompt: Enter the RABBITMQ domain/IP
       private: false
   tasks:
-  - name: Install python package
+  - name: Install python packages
     ansible.builtin.package:
       name: "{{ item }}"
       state: present
@@ -71,7 +71,7 @@
 
   - name: Daemon-reload
     ansible.builtin.systemd_service:
-      daemon-reload: yes
+      daemon-reload: true
 
   - name: Enable and Start payment service
     ansible.builtin.systemd_service:

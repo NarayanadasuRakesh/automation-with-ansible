@@ -17,7 +17,7 @@
       name: nodejs
       state: present
 
-  - name: Create cart
+  - name: Create user for cart
     ansible.builtin.user:
       name: roboshop
 
@@ -31,7 +31,7 @@
       url: https://roboshop-builds.s3.amazonaws.com/cart.zip
       dest: /tmp
 
-  - name: Unarchive cart application
+  - name: Unarchive cart application code
     ansible.builtin.unarchive:
       src: /tmp/cart.zip
       dest: /app
@@ -61,9 +61,9 @@
 
   - name: Daemon reload service
     ansible.builtin.systemd_service:
-      daemon-reload: yes
+      daemon-reload: true
 
-  - name: Start and Enable service
+  - name: Enable and Start service
     ansible.builtin.systemd_service:
       name: cart
       enabled: yes
